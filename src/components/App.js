@@ -11,44 +11,51 @@ import './App.css';
 class App extends Component {
 
   async componentWillMount() {
+    await this.loadWeb3()
     await this.loadBlockchainData(this.props.dispatch)
   }
 
-  async loadBlockchainData(dispatch) {
-
-    //check if MetaMask exists
-    if (typeof window.ethereum != 'undefined') {
-      //assign to values to variables: web3, netId, accounts
-      const web3 = new Web3(window.ethereum)
-      const netId = await web3.eth.net.getId()
-      const accounts = await web3.eth.getAccounts()
-
-      // Load balance
-      //check if account is detected, then load balance&setStates, elsepush alert
-      if (typeof accounts[0] !== 'undefined') {
-        const balance = await web3.eth.getBalance(accounts[0])
-        this.setState({ account: accounts[0], balance: balance, web3: web3 })
-      } else {
-        window.alert('Please login with Metamask')
-      }
-
-      //in try block load contracts
-      try {
-        const token = new web3.eth.Contract(Token.abi, Token.networks[netId].address)
-        const dbank = new web3.eth.Contract(dBank.abi, dBank.networks[netId].address)
-        const dBankAddress = dBank.networks[netId].address
-        const tokenBalance = await token.methods.balanceOf(this.state.account).call()
-        console.log(web3.utils.fromWei(tokenBalance))
-        const tokenBalanceString = web3.utils.fromWei(tokenBalance)
-        this.setState({ token: token, dbank: dbank, dBankAddress: dBankAddress, tokenBalance: tokenBalanceString })
-      } catch (e) {
-        console.log('Error ', e)
-        window.alert('Contract not deployed to the current network')
-      }
-
+  async loadWeb3() {
+    if (window.ethereum) {
+      //window is ethereum, and will wait for connect
+      window.web3 = new Web3(window.ethereum)
+      await window.ethereum.enable()
+    } else if (window.web3) {
+      //window is web3 and get current provider
+      window.web3 = new Web3(window.web3.currentProvider)
     } else {
-      //if MetaMask not exists push alert
-      window.alert('Please install Metamask')
+      //Non-Ethereum browser
+      window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!')
+    }
+  }
+
+  async loadBlockchainData(dispatch) {
+    //assign to values to variables: web3, netId, accounts
+    const web3 = window.web3
+    const netId = await web3.eth.net.getId()
+    const accounts = await web3.eth.getAccounts()
+
+    // Load balance
+    //check if account is detected, then load balance&setStates, elsepush alert
+    if (typeof accounts[0] !== 'undefined') {
+      const balance = await web3.eth.getBalance(accounts[0])
+      this.setState({ account: accounts[0], balance: balance, web3: web3 })
+    } else {
+      window.alert('Please login with Metamask')
+    }
+
+    //in try block load contracts
+    try {
+      const token = new web3.eth.Contract(Token.abi, Token.networks[netId].address)
+      const dbank = new web3.eth.Contract(dBank.abi, dBank.networks[netId].address)
+      const dBankAddress = dBank.networks[netId].address
+      const tokenBalance = await token.methods.balanceOf(this.state.account).call()
+      console.log(web3.utils.fromWei(tokenBalance))
+      const tokenBalanceString = web3.utils.fromWei(tokenBalance)
+      this.setState({ token: token, dbank: dbank, dBankAddress: dBankAddress, tokenBalance: tokenBalanceString })
+    } catch (e) {
+      console.log('Error ', e)
+      window.alert('Contract not deployed to the current network')
     }
   }
 
