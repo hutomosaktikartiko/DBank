@@ -2,8 +2,9 @@ import { Tabs, Tab } from 'react-bootstrap'
 import dBank from '../abis/dBank.json'
 import React, { Component } from 'react';
 import Token from '../abis/Token.json'
-import dbank from '../dbank.png';
+// import dbank from '../dbank.png';
 import Web3 from 'web3';
+import Navbar from './Navbar';
 import './App.css';
 
 //h0m3w0rk - add new tab to check accrued interest
@@ -101,7 +102,7 @@ class App extends Component {
   render() {
     return (
       <div className='text-monospace'>
-        <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+        {/* <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
           <a
             className="navbar-brand col-sm-3 col-md-2 mr-0"
             href="http://www.dappuniversity.com/bootcamp"
@@ -112,7 +113,8 @@ class App extends Component {
             <b>dBank</b>
           </a>
           <small className='text-white mr-2'>{this.state.account}</small>
-        </nav>
+        </nav> */}
+        <Navbar account={this.state.account} />
         <div className="container-fluid mt-5 text-center">
           <br></br>
           <h1>Welcome to dBank</h1>
