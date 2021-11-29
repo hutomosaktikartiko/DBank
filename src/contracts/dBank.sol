@@ -11,11 +11,15 @@ contract dBank {
   //add mappings
   mapping(address => uint) public etherBalanceOf;
   mapping(address => uint) public depositStart;
+  mapping(address => uint) public collateralEther;
+
   mapping(address => bool) public isDeposited;
+  mapping(address => bool) public isBorrowed;
 
   //add events
   event Deposit(address indexed user, uint etherAmount, uint timeStart);
   event Withdraw(address indexed user, uint etherAmount, uint depositTime, uint interest);
+  event Borrow(address indexed user, uint collateralEtherAmount, uint borrowedTokenAmount);
 
   //pass as constructor argument deployed Token contract
   constructor(Token _token) public {
@@ -77,17 +81,24 @@ contract dBank {
 
   function borrow() payable public {
     //check if collateral is >= than 0.01 ETH
+    require(msg.value >= 1e16, 'Error, loan already token');
     //check if user doesn't have active loan
+    require(isBorrowed[msg.sender] == false, 'Error, loan already taken');
 
     //add msg.value to ether collateral
+    collateralEther[msg.sender] = collateralEther[msg.sender] + msg.value;
 
     //calc tokens amount to mint, 50% of msg.value
+    uint tokensToMint = collateralEther[msg.sender] / 2;
 
     //mint&send tokens to user
+    token.mint(msg.sender, tokensToMint);
 
     //activate borrower's loan status
+    isBorrowed[msg.sender] = true;
 
     //emit event
+    emit Borrow(msg.sender, collateralEther[msg.sender], tokensToMint);
   }
 
   function payOff() public {
