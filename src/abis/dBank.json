@@ -10315,11 +10315,55 @@
           ],
           "name": "Withdraw",
           "type": "event"
+        },
+        "0xe1979fe4c35e0cef342fef5668e2c8e7a7e9f5d5d1ca8fee0ac6c427fa4153af": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "user",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "collateralEtherAmount",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "borrowedTokenAmount",
+              "type": "uint256"
+            }
+          ],
+          "name": "Borrow",
+          "type": "event"
+        },
+        "0xfd9bbd044fa427970e4d882ebbb4a89ce422dc29b23f2777a14a93ecdf42c644": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "user",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "fee",
+              "type": "uint256"
+            }
+          ],
+          "name": "PayOff",
+          "type": "event"
         }
       },
       "links": {},
-      "address": "0xaaa94CcA59cC801A4B556e903c947585B76B1DBA",
-      "transactionHash": "0x9b23af85ffb74dca91c1831dcbc1ee554489ce93037ad71d6c42e0f3f8643d7a"
+      "address": "0xFDf4D6Ab1B603B1A0332a38F35c495de3588AFF4",
+      "transactionHash": "0x43664d52531fccb1e66f7ade7256816c4282eb5eb7a9d2c516c49b9b3555e07b"
     },
     "5777": {
       "events": {
@@ -10430,7 +10474,7 @@
     }
   },
   "schemaVersion": "3.3.3",
-  "updatedAt": "2021-11-30T14:09:38.475Z",
+  "updatedAt": "2021-11-30T15:01:16.411Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
