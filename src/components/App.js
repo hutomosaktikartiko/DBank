@@ -96,6 +96,20 @@ class App extends Component {
     }
   }
 
+  async payOff(e) {
+    e.preventDefault()
+    if(this.state.dbank !== 'undefined') {
+      try {
+        const collateralEther = await this.state.dbank.methods.collateralEther(this.state.account).call({from: this.state.account})
+        const tokenBorrowed = collateralEther / 2
+        await this.state.token.methods.approve(this.state.dBankAddress, tokenBorrowed.toString()).send({from: this.state.account})
+        await this.state.dbank.methods.payOff().send({from: this.state.account})
+      } catch (e) {
+        console.log('Error, pay off: ', e)
+      }
+    }
+  }
+
   constructor(props) {
     super(props)
     this.state = {
@@ -110,6 +124,7 @@ class App extends Component {
     this.deposit = this.deposit.bind(this)
     this.withdraw = this.withdraw.bind(this)
     this.borrow = this.borrow.bind(this)
+    this.payOff = this.payOff.bind(this)
   }
 
   render() {
@@ -121,6 +136,7 @@ class App extends Component {
           deposit = {this.deposit}
           withdraw = {this.withdraw}
           borrow = {this.borrow}
+          payOff = {this.payOff}
         />
       </div>
     );

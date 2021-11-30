@@ -89,6 +89,15 @@ class Main extends Component {
                                         </form>
                                     </div>
                                 </Tab>
+                                <Tab eventKey="payOff" title="Payoff">
+                                    <div>
+                                        <br></br>
+                                        Do youd want to payoff the loan?
+                                        <br></br>
+                                        <br></br>
+                                        <button type="submit" className="btn btn-primary" onClick={(event) => this.props.payOff(event)}>PAYOFF</button>
+                                    </div>
+                                </Tab>
                             </Tabs>
                         </div>
                     </main>
